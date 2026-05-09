@@ -15,10 +15,23 @@
   :init
   (keymap-global-unset "C-x C-j")
   :custom
+  ;; Only use a single dired buffer, having new ones "replace" this one.
+  (dired-kill-when-opening-new-dired-buffer t)
+  (dired-auto-revert-buffer #'dired-directory-changed-p)
+  (dired-clean-up-buffers-too t)
+  (dired-clean-confirm-killing-deleted-buffers t)
   (dired-recursive-copies #'always)
   (dired-recursive-deletes #'always)
-  (delete-by-moving-to-trace t)
+  (delete-by-moving-to-trash t)
+  (dired-create-destination-dirs 'ask)
+  (wdired-create-parent-directories t)
   (dired-dwim-target t))
+
+(use-package dired
+  :ensure nil ; built-in
+  :when (>= emacs-major-version 29)
+  :custom
+  (dired-create-destination-dirs-on-trailing-dirsep t))
 
 ;; Enable dired-x so that we get the "extra goodies" we want to use in dired.
 ;; For example, `dired-do-find-marked-files', which does `find-file' on every

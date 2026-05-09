@@ -113,6 +113,7 @@
 ;;;; Multiple Cursors
 (require 'multiple-cursors-config)
 
+(require 'diff-config)
 (require 'ediff-config)
 
 ;;;; flycheck for spell/syntax checking

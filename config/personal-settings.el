@@ -56,6 +56,50 @@
   (global-display-line-numbers-mode)
   ;; Have line with my cursor highlighted
   (global-hl-line-mode 1)
+
+  ;; Configure where windows holding special kinds of buffers appear.
+  ;; Place selection/search/help/information windows below the current one.
+  (add-to-list 'display-buffer-alist
+               '((or . ((derived-mode . occur-mode)
+                        (derived-mode . grep-mode)
+                        (derived-mode . Buffer-menu-mode)
+                        (derived-mode . log-view-mode)
+                        (derived-mode . help-mode)))
+                 ;; Display as a normal buffer on the right (if possible).
+                 ;; This is not a side-window because I want to be able to use
+                 ;; the `split-window' functions on it.
+                 (display-buffer-in-direction)
+                 (direction . right)
+                 (dedicated . t)
+                 (body-function . select-window)))
+
+  ;; The `org-capture' key selection, `org-add-log-note', and agenda dispatcher
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*\\(Org \\(Select\\|Note\\)\\|Agenda Commands\\)\\*\\'"
+                 (display-buffer-in-side-window)
+                 (dedicated . t)
+                 (side . bottom)
+                 (slot . 0)
+                 (window-parameters . ((mode-line-format . none)))))
+
+  ;; Put the calendar below.
+  (add-to-list 'display-buffer-alist
+               '((derived-mode . calendar-mode)
+                 (display-buffer-reuse-mode-window display-buffer-below-selected)
+                 (mode . (calendar-mode bookmark-edit-annotation-mode ert-results-mode))
+                 (inhibit-switch-frame . t)
+                 (dedicated . t)
+                 (window-height . fit-window-to-buffer)))
+
+  ;; The regular expression (re-builder) buffer & window holding it.
+  (add-to-list 'display-buffer-alist
+               '((derived-mode . reb-mode) ; M-x re-builder
+                 (display-buffer-reuse-mode-window display-buffer-below-selected)
+                 (inhibit-switch-frame . t)
+                 (window-height . 4) ; note this is literal lines, not relative
+                 (dedicated . t)
+                 (preserve-size . (t . t))))
+
   :custom
   ;; Make Emacs treat manual and programmatic buffer switches the same. This
   ;; works by making `switch-to-buffer' actually use `pop-to-buffer-same-window'
