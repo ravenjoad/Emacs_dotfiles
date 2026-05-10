@@ -44,6 +44,9 @@
 (require 'personal-settings)
 (require 'personal-functions)
 
+;; Configure grep-mode and occur-mode
+(require 'search-config)
+
 ;; Configure dired
 (require 'dired-config)
 
