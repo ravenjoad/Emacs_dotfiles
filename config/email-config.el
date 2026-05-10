@@ -223,31 +223,44 @@ kgh@u.northwestern.edu")))))
 ;; Since I use Gmail, I have to use SMTP to send my emails.
 ;; This means I need to use a non-default mail sender, namely the program msmtp.
 
-(defvar karljoad/queue-mail-command (if (karljoad/is-nixos)
-          "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-enqueue.sh"
-              "/usr/share/doc/msmtp/scripts/msmtpqueue/msmtp-enqueue.sh")
-  "Command that will queue the mail for sending by placing it in a directory for later sending.")
-(defvar karljoad/send-queued-mail-command (if (karljoad/is-nixos)
-                "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-runqueue.sh"
-              "/usr/share/doc/msmtp/scripts/msmtpqueue/msmtp-runqueue.sh")
-  "Command that will send ALL queued mail.")
-(defvar karljoad/queued-mail-dir "~/.msmtpqueue/" ;; (if (getenv "MSMTP_QUEUE")
-         ;;     (concat (getenv "MSMTP_QUEUE") "/")
-         ;;   "~/.msmtpqueue/")
-  "Location where the mail queued to be sent will be stored until that time.")
+(use-package emacs
+  :ensure nil ; built-in
+  :defer nil
+  :init
+  (defvar karljoad/queue-mail-command
+    (or (executable-find "msmtp-enqueue.sh")
+        "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-enqueue.sh")
+    "Command that will queue the mail for sending by placing it in a directory for later sending.")
 
-;; This will send ALL mail IMMEDIATELY, and will fail if you do not have an
-;; Internet connection.
-;; We set this by default here, so we can always try to send something
-(setq sendmail-program "msmtp")
-;; Or, we can queue them, and then have an mu4e keybinding to send them when we
-;; get the chance.
-(setq smtpmail-queue-mail nil ;; Switched by my4e~main-toggle-mail-sending-mode function
-      smtpmail-queue-dir karljoad/queued-mail-dir)
-;; We need to make sure the queuing directory exists, before Emacs lets the user
-;; attempt to use the directory.
-(when (not (file-directory-p smtpmail-queue-dir))
-  (make-directory smtpmail-queue-dir t))
+  (defvar karljoad/send-queued-mail-command
+    (or (executable-find "msmtp-runqueue.sh")
+        "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-runqueue.sh")
+    "Command that will send ALL queued mail.")
+
+  (defvar karljoad/queued-mail-dir
+    (or (getenv "QUEUEDIR")
+        (getenv "QUEUE_DIR")
+        (getenv "MSMTP_QUEUE")
+        (getenv "MSMTPQUEUE")
+        "~/.msmtpqueue/")
+    "Location where the mail queued to be sent will be stored until that time.")
+
+  :config
+  ;; Or, we can queue them, and then have an mu4e keybinding to send them when we
+  ;; get the chance.
+  ;; Switched by my4e~main-toggle-mail-sending-mode function
+  (setq smtpmail-queue-mail nil)
+  (setq smtpmail-queue-dir karljoad/queued-mail-dir)
+  ;; We need to make sure the queuing directory exists, before Emacs lets the user
+  ;; attempt to use the directory.
+  (when (not (file-directory-p smtpmail-queue-dir))
+    (make-directory smtpmail-queue-dir t))
+
+  :custom
+  ;; This will send ALL mail IMMEDIATELY, and will fail if you do not have an
+  ;; Internet connection.
+  ;; We set this by default here, so we can always try to send something
+  (sendmail-program "msmtp"))
 
 ;; Overwrite the mu4e~main-toggle-mail-sending-mode keybinding with my own function
 (defun karljoad/set-sendmail-program ()
