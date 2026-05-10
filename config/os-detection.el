@@ -2,7 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(defun karljoad/this-system-this-linux-distro? (distro)
+(defun ravenjoad/this-system-this-linux-distro? (distro)
   "Return t or nil, depending on if the current OS is DISTRO."
   (interactive "MID of the distro (as found in /etc/os-release): ")
   (with-temp-buffer
@@ -15,13 +15,13 @@
                             nil))
             t)))))
 
-(defun karljoad/is-nixos ()
+(defun ravenjoad/is-nixos ()
   "Return t or nil, depending on if the current OS is NixOS."
-  (karljoad/this-system-this-linux-distro? "nixos"))
+  (ravenjoad/this-system-this-linux-distro? "nixos"))
 
-(defun karljoad/is-guix-system ()
+(defun ravenjoad/is-guix-system ()
   "Return t or nil, depending on if the current OS is Guix System."
-  (karljoad/this-system-this-linux-distro? "guix"))
+  (ravenjoad/this-system-this-linux-distro? "guix"))
 
 
 (provide 'os-detection)

@@ -7,7 +7,7 @@
 (use-package vterm
   :ensure nil ;; built-in
   :defer t
-  :when (karljoad/is-guix-system))
+  :when (ravenjoad/is-guix-system))
 
 (provide 'vterm-config)
 ;;; vterm-config.el ends here

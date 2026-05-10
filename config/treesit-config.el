@@ -44,7 +44,7 @@
   ;; exposed with an environment variable.
   ;; When I am on a Guix-based system, assume I am using Guix Home and add the
   ;; store path to Emacs' understanding of the tree-sitter module load path.
-  (when (karljoad/is-guix-system)
+  (when (ravenjoad/is-guix-system)
     (setq treesit-extra-load-path
           (append (split-string (getenv "TREE_SITTER_GRAMMAR_PATH") ":")
                   treesit-extra-load-path)))

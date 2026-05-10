@@ -25,7 +25,7 @@
   (setq sbt:program-options '("-Dsbt.supershell=false")))
 
 (use-package scala-ts-mode
-  :ensure (:host github :repo "KarlJoad/scala-ts-mode"
+  :ensure (:host github :repo "ravenjoad/scala-ts-mode"
            :branch "main"
            :depth nil)
   :defer t

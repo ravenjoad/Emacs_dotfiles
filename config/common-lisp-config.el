@@ -23,7 +23,7 @@
   :config
   ;; Point to my LOCAL copy of the Hyperspec.
   (cond
-   ((karljoad/is-guix-system) (setq common-lisp-hyperspec-root "~/.guix-home/profile/share/HyperSpec-7-0/"))))
+   ((ravenjoad/is-guix-system) (setq common-lisp-hyperspec-root "~/.guix-home/profile/share/HyperSpec-7-0/"))))
 
 (provide 'common-lisp-config)
 ;;; common-lisp-config.el ends here

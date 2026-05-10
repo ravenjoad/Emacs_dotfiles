@@ -45,7 +45,7 @@
 
 ;;; 
 ;;; BibTeX
-(defvar karljoad/default-bibtex-dialect 'biblatex
+(defvar ravenjoad/default-bibtex-dialect 'biblatex
   "By default, I like to use BibLaTeX, so I want to make sure I always use that.")
 
 (use-package bibtex
@@ -54,12 +54,12 @@
   ;; Associate *.bib files with bibtex-mode.
   ;; This also applies to *.bib files that are written in BibLaTeX style as well.
   :mode ("\\.bib\\'" . bibtex-mode)
-  :hook (bibtex-mode . (lambda () (setq bibtex-dialect karljoad/default-bibtex-dialect)))
+  :hook (bibtex-mode . (lambda () (setq bibtex-dialect ravenjoad/default-bibtex-dialect)))
   :config
   (setq-default comment-start "%")
   :custom
   ;; Default to newer BibLaTeX style
-  (bibtex-dialect karljoad/default-bibtex-dialect)
+  (bibtex-dialect ravenjoad/default-bibtex-dialect)
   (bibtex-maintain-sorted-entries t)
   (bibtex-parse-keys-timeout nil))
 
@@ -103,7 +103,7 @@
   (TeX-source-correlate-start-server t))
 
 ;;; Set up the compilation options
-(defun karljoad/set-TeX-command-list ()
+(defun ravenjoad/set-TeX-command-list ()
   "Set up the TeX-command-list for me."
   ;; %l adds the current LaTeX-command-style to the command line
   ;; Usually, this is "pdflatex/xelatex/lualatex -file-line-error ..."
@@ -161,7 +161,7 @@
           ("Emacs Buffer" "emacsclient -n -e ./TeX_Output/%o")))
     (setq TeX-view-program-selection '(((output-dvi style pstricks) "dvips and start")
                (output-pdf "Zathura")))
-  (karljoad/set-TeX-command-list)) ;; Calls the function that sets up my TeX-command-list
+  (ravenjoad/set-TeX-command-list)) ;; Calls the function that sets up my TeX-command-list
 
 ;;; Apply latex-mode to TikZ pictures
 (setq auto-mode-alist

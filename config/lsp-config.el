@@ -7,13 +7,13 @@
 ;; can then nicely render for me.
 (require 'markdown-config)
 
-(defun karljoad/close-eldoc-doc-buffer ()
+(defun ravenjoad/close-eldoc-doc-buffer ()
   "Quit the Eldoc buffer window using `quit-window'.
 This buries the buffer to the bottom of the buffer list and deletes the window."
   (interactive)
   (quit-window 'nil (get-buffer-window (eldoc-doc-buffer))))
 
-(defun karljoad/eldoc-doc-buffer ()
+(defun ravenjoad/eldoc-doc-buffer ()
   "Run Eldoc at symbol at point, switching to the Eldoc buffer in another window."
   (interactive)
   (switch-to-buffer-other-window (eldoc-doc-buffer)))
@@ -37,12 +37,12 @@ This buries the buffer to the bottom of the buffer list and deletes the window."
   :defer t
   :after (eldoc)
   :bind (:map eglot-mode-map
-         ("C-h ." . #'karljoad/eldoc-doc-buffer) ;; Override the default binding
-         ("C-c h ." . #'karljoad/eldoc-doc-buffer)
+         ("C-h ." . #'ravenjoad/eldoc-doc-buffer) ;; Override the default binding
+         ("C-c h ." . #'ravenjoad/eldoc-doc-buffer)
          ;; Rebind eldoc to something else I use less often. eldoc will open
          ;; the buffer, but then not switch to it, just leaving it open to stare at.
          ("C-c h ?" . #'eldoc)
-         ("C-h >" . #'karljoad/close-eldoc-doc-buffer))
+         ("C-h >" . #'ravenjoad/close-eldoc-doc-buffer))
   :hook (((c-mode c++-mode c-ts-mode c++-ts-mode rust-mode rust-ts-mode
            scala-mode scala-ts-mode python-mode python-ts-mode qml-ts-mode) . eglot-ensure))
   :config

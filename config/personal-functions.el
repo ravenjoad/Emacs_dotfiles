@@ -3,27 +3,27 @@
 ;;
 ;; I have a file for personal information and personal settings, so it makes
 ;; sense to have another file whose only job is to define my personal functions.
-;; These are functions that will be prefaced with karljoad/function-name.
-;; These will typically only be callable through the M-x karljoad/function-name
+;; These are functions that will be prefaced with ravenjoad/function-name.
+;; These will typically only be callable through the M-x ravenjoad/function-name
 ;; route, simplifying my life a little bit.
 ;;
 ;;; Code:
 
-(defvar karljoad--in-presentation-mode-p 'nil
+(defvar ravenjoad--in-presentation-mode-p 'nil
   "Is Emacs currently in \"presentation mode\"?")
 
 ;; Modified from Adrien Brochard's configuration.org
-(defun karljoad/toggle-presentation ()
+(defun ravenjoad/toggle-presentation ()
   "If NEW-FONT-HEIGHT provided, toggle presentation features, like font increase."
   (interactive)
   (require 'personal-settings)
   (let ((presentation-fontsize 200))
-    (if karljoad--in-presentation-mode-p
-        (set-face-attribute 'default nil :height karljoad--default-font-height)
+    (if ravenjoad--in-presentation-mode-p
+        (set-face-attribute 'default nil :height ravenjoad--default-font-height)
       (set-face-attribute 'default nil :height presentation-fontsize))
-    (setq karljoad--in-presentation-mode-p (not karljoad--in-presentation-mode-p))))
+    (setq ravenjoad--in-presentation-mode-p (not ravenjoad--in-presentation-mode-p))))
 
-(defun karljoad/etags-generate (dir-name)
+(defun ravenjoad/etags-generate (dir-name)
   "Generate an etags TAGS file for C in the specified DIR-NAME.
 
 Note that this uses `xargs' and `find', both of which are provided by GNU
@@ -32,7 +32,7 @@ findutils."
   (eshell-command
       (format "find %s -type f -name \"*.[chS]\" | xargs etags -a" dir-name)))
 
-(defun karljoad/reload-dir-locals-current-buffer ()
+(defun ravenjoad/reload-dir-locals-current-buffer ()
   "Reload `.dir-locals.el' for the current buffer.
 
 This function is from https://emacs.stackexchange.com/a/13096"
@@ -51,7 +51,7 @@ with the empty character."
       (replace-match (string ?\C-j) nil t))
     (set-buffer-file-coding-system 'unix 't)))
 
-(defun karljoad/remove-file-whitespace ()
+(defun ravenjoad/remove-file-whitespace ()
   "Remove trailing whitespace from files.
 
 Opens and removes all trailing whitespace from the list of files selected in a
@@ -65,7 +65,7 @@ file."
             (delete-trailing-whitespace (point-min) nil)))
         (dired-get-marked-files nil)))
 
-(defun karljoad/revert-selected-buffers ()
+(defun ravenjoad/revert-selected-buffers ()
   "Revert all buffers currently selected by ibuffer.
 
 This will revert all the marked buffers, but will NOT open them for viewing,
@@ -81,12 +81,12 @@ if it is modified!"
             (revert-buffer-quick))
           (ibuffer-get-marked-buffers))))
 
-(defun karljoad/gc-events ()
+(defun ravenjoad/gc-events ()
   "Print message about GC statistics."
   (interactive)
   (message "%d GC Events\n%0.2f Seconds spent GC-ing" gcs-done gc-elapsed))
 
-(defun karljoad/remove-ansi-escape-sequences (&optional start end backward
+(defun ravenjoad/remove-ansi-escape-sequences (&optional start end backward
                                                         region-noncontiguous-p)
   "Remove ANSI terminal color and formatting escape sequences from START to END.
 
@@ -111,7 +111,7 @@ then remove escape sequences from the entire buffer."
 
 ;; TODO: Allow universal argument (C-u) to customize the format and allow the
 ;; desired location to be set (location other than point).
-(defun karljoad/insert-today-date ()
+(defun ravenjoad/insert-today-date ()
   "Insert todays date in ISO (YYYY-MM-DD) format at point."
   (interactive)
   (require 'calendar)

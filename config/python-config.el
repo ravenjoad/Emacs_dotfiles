@@ -5,7 +5,7 @@
 (use-package python-mode
   :ensure nil ; built-in
   :defer t
-  :bind (:repeat-map karljoad/python-mode-repeat-map
+  :bind (:repeat-map ravenjoad/python-mode-repeat-map
          (">" . python-indent-shift-right)
          ("<" . python-indent-shift-left))
   :config
@@ -16,7 +16,7 @@
 (use-package python-ts-mode
   :ensure nil ; built-in
   :defer t
-  :bind (:repeat-map karljoad/python-mode-repeat-map
+  :bind (:repeat-map ravenjoad/python-mode-repeat-map
          (">" . python-indent-shift-right)
          ("<" . python-indent-shift-left))
   :config

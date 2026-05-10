@@ -10,7 +10,7 @@
 
 (use-package agda2-mode
   :ensure nil ; Must be provided by system or other tool
-  :when (karljoad/is-guix-system))
+  :when (ravenjoad/is-guix-system))
 
 (provide 'agda-config)
 ;;; agda-config.el ends here

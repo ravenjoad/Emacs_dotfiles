@@ -11,7 +11,7 @@
     (add-hook 'emacs-startup-hook 'toggle-frame-maximized)
     (add-to-list 'default-frame-alist '(fullscreen . fullboth))))
  ;; On Guix, I use StumpWM, use a maximized frame to NOT cover Stump's modeline
- ((karljoad/is-guix-system)
+ ((ravenjoad/is-guix-system)
   (progn
     (add-hook 'emacs-startup-hook 'toggle-frame-maximized)
     (add-to-list 'default-frame-alist '(maximized . fullboth))))
@@ -323,12 +323,12 @@ Use with the 'display-battery-mode' function.")
   "Show battery status in modeline.
 Use with the 'display-battery-mode' function.")
 
-(defconst karljoad/display-time-mode-line-format "%R %F"
+(defconst ravenjoad/display-time-mode-line-format "%R %F"
   "Karl's preference on the time and date information to display on the modeline.
 Displays the time in HH:MM format (24-hour), then the date in YYYY-MM-DD format.
 
 Use with `display-time-format' variable.")
-(defconst karljoad/battery-mode-line-format "[%p%%,%mMin]"
+(defconst ravenjoad/battery-mode-line-format "[%p%%,%mMin]"
   "Karl's preference on the battery information to display on the modeline.
 Displays an approximation of the current amount of battery left, as a
 percentage, then the number of minutes left until the battery is emptied or
@@ -341,12 +341,12 @@ Use with `battery-mode-line-format' variable.")
 (display-time-mode show-time) ;; Show system time in buffer modeline.
 ;; (setq display-time-24hr-format t) ;; Show system time in 24-hour clock
 ;; (setq display-time-day-and-date t) ;; Show time AND date
-(setq display-time-format karljoad/display-time-mode-line-format) ;; Karl's preferred display-time setup
+(setq display-time-format ravenjoad/display-time-mode-line-format) ;; Karl's preferred display-time setup
 (setq display-time-default-load-average 5-minute-load)
 
 ;; Show battery information in the modeline.
 (display-battery-mode show-battery) ;; Show battery status info in buffer modeline.
-(setq battery-mode-line-format karljoad/battery-mode-line-format) ;; Karl's preferred battery-display setup.
+(setq battery-mode-line-format ravenjoad/battery-mode-line-format) ;; Karl's preferred battery-display setup.
 
 (setq-default tab-width 2) ; Default to indentation size of 2 spaces
 (setq-default indent-tabs-mode nil) ; Use spaces instead of tabs
@@ -361,23 +361,23 @@ Use with `battery-mode-line-format' variable.")
 
 
 ;; Set my preferred font style.
-(defconst karljoad/preferred-font
+(defconst ravenjoad/preferred-font
   (cond
    ((equal system-type 'windows-nt) "Courier New-11") ;; In this case, 11pt Courier New
    ((equal system-type 'gnu/linux) "Iosevka Semibold-10.5")) ;"Fira Code Retina-11"
-  "My (KarlJoad's) preferred font.
+  "My (Ravenjoad's) preferred font.
 This needs to be a string that matches a font available on the system Emacs is
 currently running on.")
 
 ;; NOTE: Emacs' :height face-attribute is in 1/10pt, so 105 = 10.5 point font
-(defconst karljoad--default-font-height
+(defconst ravenjoad--default-font-height
   (cond
    ((equal system-type 'windows-nt) 110)
    ((equal system-type 'gnu/linux) 105))
   "The \"height\" of the default face (font) when Emacs starts.")
 
-(add-to-list 'initial-frame-alist `(font . ,karljoad/preferred-font))
-(add-to-list 'default-frame-alist `(font . ,karljoad/preferred-font))
+(add-to-list 'initial-frame-alist `(font . ,ravenjoad/preferred-font))
+(add-to-list 'default-frame-alist `(font . ,ravenjoad/preferred-font))
 
 
 ;;; Registers & Bookmarks

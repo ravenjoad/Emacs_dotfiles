@@ -34,9 +34,9 @@
 (require 'personal-functions)
 (defvar mu4e-load-path
   (cond
-   ((karljoad/is-nixos)
+   ((ravenjoad/is-nixos)
     "/run/current-system/sw/share/emacs/site-lisp/mu4e")
-   ((karljoad/is-guix-system)
+   ((ravenjoad/is-guix-system)
     (concat (getenv "HOME") "/.guix-home/profile/share/emacs"))
    (t
     "/usr/share/emacs/site-lisp/mu4e"))
@@ -55,12 +55,12 @@
          :map mu4e-view-mode-map
          ("C-c C-o" . mu4e--view-browse-url-from-binding)
          :map mu4e-main-mode-map
-         ;; ("m" . 'karljoad/set-sendmail-program)
-         ("S" . 'karljoad/send-queued-mail)
-         ("f" . 'karljoad/send-queued-mail)
+         ;; ("m" . 'ravenjoad/set-sendmail-program)
+         ("S" . 'ravenjoad/send-queued-mail)
+         ("f" . 'ravenjoad/send-queued-mail)
          :map mu4e-compose-mode-map
          ("M-$" . ispell-message))
-  :hook ((mu4e-compose-mode . karljoad/encrypt-responses)
+  :hook ((mu4e-compose-mode . ravenjoad/encrypt-responses)
          ;; When writing an email, a file is created in `mu4e-drafts-folder',
          ;; which keeps copies of the message as I write it. However, using the
          ;; email stack I have now, by default, causes my drafts to be synced up
@@ -83,7 +83,7 @@
   ;; our mail the msmtp expects.
   (smtpmail-queue-mail nil)
   ;; Where should our SMTP-based sendmail program place queued emails?
-  (smtpmail-queue-dir karljoad/queue-mail-command)
+  (smtpmail-queue-dir ravenjoad/queue-mail-command)
   ;; Moving messages (especially between directories) renames files to avoid
   ;; errors
   (mu4e-change-filenames-when-moving t)
@@ -227,17 +227,17 @@ kgh@u.northwestern.edu")))))
   :ensure nil ; built-in
   :defer nil
   :init
-  (defvar karljoad/queue-mail-command
+  (defvar ravenjoad/queue-mail-command
     (or (executable-find "msmtp-enqueue.sh")
         "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-enqueue.sh")
     "Command that will queue the mail for sending by placing it in a directory for later sending.")
 
-  (defvar karljoad/send-queued-mail-command
+  (defvar ravenjoad/send-queued-mail-command
     (or (executable-find "msmtp-runqueue.sh")
         "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-runqueue.sh")
     "Command that will send ALL queued mail.")
 
-  (defvar karljoad/queued-mail-dir
+  (defvar ravenjoad/queued-mail-dir
     (or (getenv "QUEUEDIR")
         (getenv "QUEUE_DIR")
         (getenv "MSMTP_QUEUE")
@@ -250,7 +250,7 @@ kgh@u.northwestern.edu")))))
   ;; get the chance.
   ;; Switched by my4e~main-toggle-mail-sending-mode function
   (setq smtpmail-queue-mail nil)
-  (setq smtpmail-queue-dir karljoad/queued-mail-dir)
+  (setq smtpmail-queue-dir ravenjoad/queued-mail-dir)
   ;; We need to make sure the queuing directory exists, before Emacs lets the user
   ;; attempt to use the directory.
   (when (not (file-directory-p smtpmail-queue-dir))
@@ -263,19 +263,19 @@ kgh@u.northwestern.edu")))))
   (sendmail-program "msmtp"))
 
 ;; Overwrite the mu4e~main-toggle-mail-sending-mode keybinding with my own function
-(defun karljoad/set-sendmail-program ()
+(defun ravenjoad/set-sendmail-program ()
   "Set the smtpmail variable sendmail-program based on the value of smtpmail-queue-mail's value."
   (interactive)
   (mu4e--main-toggle-mail-sending-mode)
   (if smtpmail-queue-mail ;; Is true, meaning we queue it
-      (setq sendmail-program karljoad/queue-mail-command)
+      (setq sendmail-program ravenjoad/queue-mail-command)
   (setq sendmail-program "msmtp")))
 
-(defun karljoad/send-queued-mail ()
+(defun ravenjoad/send-queued-mail ()
   "Sends all mail currently stored in `smtpmail-queue-dir'. Put output in *msmtp-runqueue Output* buffer."
   (interactive)
   ;; Now run the msmtp-runqueue.sh command, and put the output in a temporary buffer.
-  (with-temp-buffer (async-shell-command karljoad/send-queued-mail-command)))
+  (with-temp-buffer (async-shell-command ravenjoad/send-queued-mail-command)))
 
 ;; Commented until I figure out how to make this work.
 ;; I want to print an additional command-context line in the main mu4e buffer.
@@ -284,7 +284,7 @@ kgh@u.northwestern.edu")))))
 ;; 	    (with-current-buffer buf
 ;; 	      (setq inhibit-read-only t)
 ;; 	      (insert
-;; 	       (mu4e~main-action-str "\t[f]lush all queued mail and [S]end" 'karljoad/send-queued-mail))
+;; 	       (mu4e~main-action-str "\t[f]lush all queued mail and [S]end" 'ravenjoad/send-queued-mail))
 ;; 	      (setq inhibit-read-only nil))))
 
 
@@ -293,7 +293,7 @@ kgh@u.northwestern.edu")))))
 ;; =============================================================================
 
 ;; Shamelessly stolen from Howard R. Schwarz's configuration.org file.
-(defun karljoad/encrypt-responses ()
+(defun ravenjoad/encrypt-responses ()
   "Encrypt the current message if it's a reply to another encrypted message."
   (let ((msg mu4e-compose-parent-message))
     (when (and msg (member 'encrypted (mu4e-message-field msg :flags)))
