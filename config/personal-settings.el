@@ -108,9 +108,15 @@
   ;; Increase how much is read from processes in a single chunk. The default
   ;; value of 4096 is a bit small; use 4M in this case.
   (read-process-output-max (* 4 1024 1024))
+
   ;; According to the POSIX, a line is defined as "a sequence of zero or
   ;; more non-newline characters followed by a terminating newline".
   (require-final-newline t)
+  ;; Default to indentation size of 2 spaces
+  (tab-width 2)
+  ;;; Use spaces instead of tabs
+  (indent-tabs-mode nil)
+
   ;; Remove duplicates from the kill ring to reduce clutter
   (kill-do-not-save-duplicates t)
   ;; Improve paren highlighting
@@ -347,9 +353,6 @@ Use with `battery-mode-line-format' variable.")
 ;; Show battery information in the modeline.
 (display-battery-mode show-battery) ;; Show battery status info in buffer modeline.
 (setq battery-mode-line-format ravenjoad/battery-mode-line-format) ;; Raven's preferred battery-display setup.
-
-(setq-default tab-width 2) ; Default to indentation size of 2 spaces
-(setq-default indent-tabs-mode nil) ; Use spaces instead of tabs
 
 ;; Scratch is a package that allows me to create a *scratch* buffer for any
 ;; major mode that I may be working in right now. By default, it opens a new
