@@ -10,7 +10,7 @@
   ;; List of all feeds that I should fetch and care about
   ;; The cdr (tail of list) will be symbols attached to anything coming from that
   ;; particular feed.
-  (elfeed-feeds '(("https://karl.hallsby.com/feed.xml" personal blog)
+  (elfeed-feeds '(("https://raven.hallsby.com/feed.xml" personal blog)
                   ("https://xkcd.com/atom.xml" comic webcomic)
                   ("https://guix.gnu.org/feeds/blog.atom" gnu guile guix reproducible)
                   ("https://www.gnu.org/software/shepherd/news/feed.xml" gnu guile guix shepherd)

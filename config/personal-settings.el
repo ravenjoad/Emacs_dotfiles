@@ -324,12 +324,12 @@ Use with the 'display-battery-mode' function.")
 Use with the 'display-battery-mode' function.")
 
 (defconst ravenjoad/display-time-mode-line-format "%R %F"
-  "Karl's preference on the time and date information to display on the modeline.
+  "Raven's preference on the time and date information to display on the modeline.
 Displays the time in HH:MM format (24-hour), then the date in YYYY-MM-DD format.
 
 Use with `display-time-format' variable.")
 (defconst ravenjoad/battery-mode-line-format "[%p%%,%mMin]"
-  "Karl's preference on the battery information to display on the modeline.
+  "Raven's preference on the battery information to display on the modeline.
 Displays an approximation of the current amount of battery left, as a
 percentage, then the number of minutes left until the battery is emptied or
 fully charged.
@@ -341,12 +341,12 @@ Use with `battery-mode-line-format' variable.")
 (display-time-mode show-time) ;; Show system time in buffer modeline.
 ;; (setq display-time-24hr-format t) ;; Show system time in 24-hour clock
 ;; (setq display-time-day-and-date t) ;; Show time AND date
-(setq display-time-format ravenjoad/display-time-mode-line-format) ;; Karl's preferred display-time setup
+(setq display-time-format ravenjoad/display-time-mode-line-format) ;; Raven's preferred display-time setup
 (setq display-time-default-load-average 5-minute-load)
 
 ;; Show battery information in the modeline.
 (display-battery-mode show-battery) ;; Show battery status info in buffer modeline.
-(setq battery-mode-line-format ravenjoad/battery-mode-line-format) ;; Karl's preferred battery-display setup.
+(setq battery-mode-line-format ravenjoad/battery-mode-line-format) ;; Raven's preferred battery-display setup.
 
 (setq-default tab-width 2) ; Default to indentation size of 2 spaces
 (setq-default indent-tabs-mode nil) ; Use spaces instead of tabs
