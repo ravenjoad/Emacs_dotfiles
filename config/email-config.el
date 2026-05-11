@@ -56,8 +56,6 @@
          ("C-c C-o" . mu4e--view-browse-url-from-binding)
          :map mu4e-main-mode-map
          ;; ("m" . 'ravenjoad/set-sendmail-program)
-         ("S" . 'ravenjoad/send-queued-mail)
-         ("f" . 'ravenjoad/send-queued-mail)
          :map mu4e-compose-mode-map
          ("M-$" . ispell-message))
   :hook ((mu4e-compose-mode . ravenjoad/encrypt-responses)
@@ -248,6 +246,10 @@ kgh@u.northwestern.edu")))))
   ;; attempt to use the directory.
   (when (not (file-directory-p smtpmail-queue-dir))
     (make-directory smtpmail-queue-dir t))
+
+  (define-advice mu4e--main-queue-size
+      (:override () msmtpq--main-queue-size)
+    (length (directory-files smtpmail-queue-dir nil "\\.mail\\'")))
 
   :custom
   ;; This will send ALL mail IMMEDIATELY, and will fail if you do not have an
