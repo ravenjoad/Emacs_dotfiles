@@ -67,6 +67,18 @@ This buries the buffer to the bottom of the buffer list and deletes the window."
                  (window-height . fit-window-to-buffer)
                  (dedicated . t)))
 
+  ;; When looking at flymake (or flymake-like) diagnostics, use a dedicated
+  ;; buffer that appears at the bottom of the Emacs frame.
+  (add-to-list 'display-buffer-alist
+               '((or . ((derived-mode . flymake-diagnostics-buffer-mode)
+                        (derived-mode . flymake-project-diagnostics-mode)
+                        (derived-mode . messages-buffer-mode)
+                        (derived-mode . backtrace-mode)))
+                 (display-buffer-reuse-mode-window
+                  display-buffer-at-bottom)
+                 (window-height . fit-window-to-buffer)
+                 (dedicated . t)
+                 (preserve-size . (t . t))))
   :custom
   ;; When no buffers are connected to an LSP server, shut down the server and
   ;; eglot, to lighten the load on Emacs.
