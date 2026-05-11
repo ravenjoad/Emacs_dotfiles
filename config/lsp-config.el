@@ -125,8 +125,5 @@ This buries the buffer to the bottom of the buffer list and deletes the window."
                           :black (:enabled t :line_length 88
                                            :cache_config t)))))))
 
-;; (or (getenv "GUIX_ENVIRONMENT")
-;;     (getenv "IN_NIX_SHELL"))
-
 (provide 'lsp-config)
 ;;; lsp-config.el ends here
