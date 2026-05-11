@@ -272,17 +272,6 @@ kgh@u.northwestern.edu")))))
   ;; Now run the msmtp-runqueue.sh command, and put the output in a temporary buffer.
   (with-temp-buffer (async-shell-command ravenjoad/send-queued-mail-command)))
 
-;; Commented until I figure out how to make this work.
-;; I want to print an additional command-context line in the main mu4e buffer.
-;; (add-hook 'mu4e-main-mode
-;; 	  (let ((buf (get-buffer mu4e-main-buffer-name)))
-;; 	    (with-current-buffer buf
-;; 	      (setq inhibit-read-only t)
-;; 	      (insert
-;; 	       (mu4e~main-action-str "\t[f]lush all queued mail and [S]end" 'ravenjoad/send-queued-mail))
-;; 	      (setq inhibit-read-only nil))))
-
-
 ;; =============================================================================
 ;; My personal functions
 ;; =============================================================================
