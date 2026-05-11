@@ -50,6 +50,23 @@ This buries the buffer to the bottom of the buffer list and deletes the window."
    'eglot-server-programs
    `((scala-ts-mode scala-mode) . ,(eglot-alternatives
                                     '("metals" "metals-emacs"))))
+
+  ;; Each entry in display-buffer-alist has this anatomy:
+  ;; ( BUFFER-MATCHING-RULE (according to #'buffer-match-p)
+  ;;   LIST-OF-DISPLAY-BUFFER-ACTIONS ((elisp) Choosing Window)
+  ;;   OPTIONAL-PARAMETERS (as an alist))
+
+  ;; Attempt to show the *eldoc* buffer below the window (holding a buffer) that
+  ;; sent the documentation request.
+  (add-to-list 'display-buffer-alist
+               '("\\*eldoc\\*" ; Match *eldoc* exactly
+                 ;; List of display-functions to run
+                 (display-buffer-reuse-mode-window
+                  display-buffer-below-selected)
+                 ;; Parameters to pass to display functions
+                 (window-height . fit-window-to-buffer)
+                 (dedicated . t)))
+
   :custom
   ;; When no buffers are connected to an LSP server, shut down the server and
   ;; eglot, to lighten the load on Emacs.
