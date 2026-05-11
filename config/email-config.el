@@ -249,6 +249,15 @@ the queued scenario."
         (setq sendmail-program ravenjoad/queue-mail-command)
       (setq sendmail-program "msmtp")))
 
+  (defun ravenjoad/send-queued-mail ()
+    "Sends all mail currently stored in `smtpmail-queue-dir'.
+Put output in *msmtp-runqueue Output* buffer."
+    (interactive)
+    ;; Now run the msmtp-runqueue.sh command, and put the output in a temporary
+    ;; buffer.
+    (with-temp-buffer
+      (async-shell-command ravenjoad/send-queued-mail-command)))
+
   :config
   ;; We need to make sure the queuing directory exists, before Emacs lets the user
   ;; attempt to use the directory.
@@ -264,12 +273,6 @@ the queued scenario."
   ;; Internet connection.
   ;; We set this by default here, so we can always try to send something
   (sendmail-program "msmtp"))
-
-(defun ravenjoad/send-queued-mail ()
-  "Sends all mail currently stored in `smtpmail-queue-dir'. Put output in *msmtp-runqueue Output* buffer."
-  (interactive)
-  ;; Now run the msmtp-runqueue.sh command, and put the output in a temporary buffer.
-  (with-temp-buffer (async-shell-command ravenjoad/send-queued-mail-command)))
 
 ;; =============================================================================
 ;; My personal functions
