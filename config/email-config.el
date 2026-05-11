@@ -82,8 +82,6 @@
   ;; We don't let smtpmail queue mail, because we rely on mu4e & msmtp to queue
   ;; our mail the msmtp expects.
   (smtpmail-queue-mail nil)
-  ;; Where should our SMTP-based sendmail program place queued emails?
-  (smtpmail-queue-dir ravenjoad/queue-mail-command)
   ;; Moving messages (especially between directories) renames files to avoid
   ;; errors
   (mu4e-change-filenames-when-moving t)
@@ -237,20 +235,15 @@ kgh@u.northwestern.edu")))))
         "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-runqueue.sh")
     "Command that will send ALL queued mail.")
 
-  (defvar ravenjoad/queued-mail-dir
-    (or (getenv "QUEUEDIR")
-        (getenv "QUEUE_DIR")
-        (getenv "MSMTP_QUEUE")
-        (getenv "MSMTPQUEUE")
-        "~/.msmtpqueue/")
-    "Location where the mail queued to be sent will be stored until that time.")
+  ;; in :init so that mu4e catches it when it starts and is immediately going
+  ;; to display the binding for flushing the queue
+  (setq smtpmail-queue-dir (or (getenv "QUEUEDIR")
+                               (getenv "QUEUE_DIR")
+                               (getenv "MSMTP_QUEUE")
+                               (getenv "MSMTPQUEUE")
+                               "~/.msmtpqueue/"))
 
   :config
-  ;; Or, we can queue them, and then have an mu4e keybinding to send them when we
-  ;; get the chance.
-  ;; Switched by my4e~main-toggle-mail-sending-mode function
-  (setq smtpmail-queue-mail nil)
-  (setq smtpmail-queue-dir ravenjoad/queued-mail-dir)
   ;; We need to make sure the queuing directory exists, before Emacs lets the user
   ;; attempt to use the directory.
   (when (not (file-directory-p smtpmail-queue-dir))
