@@ -343,16 +343,22 @@ fully charged.
 Use with `battery-mode-line-format' variable.")
 ;;; END OF CONSTANT DEFINITIONS
 
-;; Show time, date, and system process load information in the modeline.
-(display-time-mode show-time) ;; Show system time in buffer modeline.
-;; (setq display-time-24hr-format t) ;; Show system time in 24-hour clock
-;; (setq display-time-day-and-date t) ;; Show time AND date
-(setq display-time-format ravenjoad/display-time-mode-line-format) ;; Raven's preferred display-time setup
-(setq display-time-default-load-average 5-minute-load)
+(use-package emacs
+  :ensure nil
+  :defer nil
+  :config
+  ;; Show time, date, and system process load information in the modeline.
+  (display-time-mode show-time) ;; Show system time in buffer modeline.
 
-;; Show battery information in the modeline.
-(display-battery-mode show-battery) ;; Show battery status info in buffer modeline.
-(setq battery-mode-line-format ravenjoad/battery-mode-line-format) ;; Raven's preferred battery-display setup.
+  ;; Show battery information in the modeline.
+  (display-battery-mode show-battery) ;; Show battery status info in buffer modeline.
+  :custom
+  ;; Preferred display-time setup
+  (display-time-format ravenjoad/display-time-mode-line-format)
+  (display-time-default-load-average 5-minute-load)
+
+  ;; Preferred battery-display setup
+  (battery-mode-line-format ravenjoad/battery-mode-line-format))
 
 ;; Scratch is a package that allows me to create a *scratch* buffer for any
 ;; major mode that I may be working in right now. By default, it opens a new
