@@ -54,8 +54,6 @@
   :bind (("C-c m" . mu4e)
          :map mu4e-view-mode-map
          ("C-c C-o" . mu4e--view-browse-url-from-binding)
-         :map mu4e-main-mode-map
-         ;; ("m" . 'ravenjoad/set-sendmail-program)
          :map mu4e-compose-mode-map
          ("M-$" . ispell-message))
   :hook ((mu4e-compose-mode . ravenjoad/encrypt-responses)
@@ -241,6 +239,16 @@ kgh@u.northwestern.edu")))))
                                (getenv "MSMTPQUEUE")
                                "~/.msmtpqueue/"))
 
+  (define-advice mu4e--main-toggle-mail-sending-mode
+      (:after () toggle-sendmail-program)
+    "Toggle `smtpmail-program' between immediate send and queued \"send\".
+
+Uses the `ravenjoad/queue-mail-command' variable to set `sendmail-program' for
+the queued scenario."
+    (if smtpmail-queue-mail ;; Is true, meaning we queue it
+        (setq sendmail-program ravenjoad/queue-mail-command)
+      (setq sendmail-program "msmtp")))
+
   :config
   ;; We need to make sure the queuing directory exists, before Emacs lets the user
   ;; attempt to use the directory.
@@ -256,15 +264,6 @@ kgh@u.northwestern.edu")))))
   ;; Internet connection.
   ;; We set this by default here, so we can always try to send something
   (sendmail-program "msmtp"))
-
-;; Overwrite the mu4e~main-toggle-mail-sending-mode keybinding with my own function
-(defun ravenjoad/set-sendmail-program ()
-  "Set the smtpmail variable sendmail-program based on the value of smtpmail-queue-mail's value."
-  (interactive)
-  (mu4e--main-toggle-mail-sending-mode)
-  (if smtpmail-queue-mail ;; Is true, meaning we queue it
-      (setq sendmail-program ravenjoad/queue-mail-command)
-  (setq sendmail-program "msmtp")))
 
 (defun ravenjoad/send-queued-mail ()
   "Sends all mail currently stored in `smtpmail-queue-dir'. Put output in *msmtp-runqueue Output* buffer."
