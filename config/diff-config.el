@@ -5,6 +5,8 @@
 (use-package diff
   :ensure nil ; Built-in
   :defer nil
+  :hook
+  ((diff-mode . read-only-mode))
   :custom
   ;; Don't syntax highlight the content being diffed inside the diff. The colors
   ;; used by the major-mode in the diff likely will not work with the red/green
