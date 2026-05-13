@@ -156,7 +156,11 @@ Put output in *msmtp-runqueue Output* buffer."
   :config
   (define-advice mu4e--main-queue-size
       (:override () msmtpq--main-queue-size)
-    (length (directory-files smtpmail-queue-dir nil "\\.mail\\'")))
+    ;; If the queue directory does not exist or is some way unreachable, then we
+    ;; just return 0.
+    (condition-case nil
+        (length (directory-files smtpmail-queue-dir nil "\\.mail\\'"))
+      (error 0)))
 
   (define-advice mu4e--main-toggle-mail-sending-mode
       (:after () toggle-sendmail-program)
@@ -251,21 +255,6 @@ kgh@u.northwestern.edu")))))
   (shr-color-visible-distance-min 5)
   (shr-use-fonts nil)
   (shr-use-colors nil))
-
-;; =============================================================================
-;; Mail sending setup
-;; =============================================================================
-;; Since I use Gmail, I have to use SMTP to send my emails.
-;; This means I need to use a non-default mail sender, namely the program msmtp.
-
-(use-package emacs
-  :ensure nil ; built-in
-  :defer nil
-  :config
-  ;; We need to make sure the queuing directory exists, before Emacs lets the user
-  ;; attempt to use the directory.
-  (when (not (file-directory-p smtpmail-queue-dir))
-    (make-directory smtpmail-queue-dir t)))
 
 
 ;; =============================================================================
