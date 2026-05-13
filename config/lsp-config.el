@@ -109,7 +109,12 @@ This buries the buffer to the bottom of the buffer list and deletes the window."
      ;; Disable inline/inlay hints (for function parameters for example).
      ;; The way Emacs handles them makes lines very long and a bit annoying to
      ;; read. I also don't find them that helpful.
-     :inlayHintProvider))
+     :inlayHintProvider
+     ;; Disable interactive formatting by the LSP server. I would rather have
+     ;; something like `apheleia-mode' do the formatting on `save-buffer' when I
+     ;; can tolerate a little bit of latency in the action. Having this reformat
+     ;; happen WHILE I am typing will be very annoying.
+     :documentOnTypeFormattingProvider))
   (eglot-stay-out-of '(yasnippet))
   (eglot-workspace-configuration
    '((:pylsp . (:configurationSources ["flake8"]
