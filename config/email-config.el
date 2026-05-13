@@ -74,7 +74,7 @@
   (mu4e-get-mail-command "mbsync -a")
   ;; Send all mail immediately. We set this to msmtp by default so we always TRY
   ;; to send something. We can change this later on.
-  ;; (sendmail-program "msmtp")
+  (sendmail-program "msmtp")
   ;; We don't let smtpmail queue mail, because we rely on mu4e & msmtp to queue
   ;; our mail the msmtp expects.
   (smtpmail-queue-mail nil)
@@ -257,13 +257,8 @@ Put output in *msmtp-runqueue Output* buffer."
 
   (define-advice mu4e--main-queue-size
       (:override () msmtpq--main-queue-size)
-    (length (directory-files smtpmail-queue-dir nil "\\.mail\\'")))
+    (length (directory-files smtpmail-queue-dir nil "\\.mail\\'"))))
 
-  :custom
-  ;; This will send ALL mail IMMEDIATELY, and will fail if you do not have an
-  ;; Internet connection.
-  ;; We set this by default here, so we can always try to send something
-  (sendmail-program "msmtp"))
 
 ;; =============================================================================
 ;; My personal functions
