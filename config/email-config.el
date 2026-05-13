@@ -203,15 +203,6 @@ kgh@u.northwestern.edu")))))
   (shr-use-colors nil))
 
 ;; =============================================================================
-;; Allow mu4e to use some capabilities of org-mode
-;; =============================================================================
-
-;; Enable org-mode like list manipulation
-;; This may also include the section headers that org-mode uses
-;; (add-hook 'message-mode-hook 'turn-on-orgstruct++)
-;; FIXME: Symbol disappeared. Causes face attribute issues.
-
-;; =============================================================================
 ;; Mail sending setup
 ;; =============================================================================
 ;; Since I use Gmail, I have to use SMTP to send my emails.
