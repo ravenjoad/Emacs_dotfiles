@@ -156,6 +156,11 @@ Put output in *msmtp-runqueue Output* buffer."
   :config
   (define-advice mu4e--main-queue-size
       (:override () msmtpq--main-queue-size)
+    "Return the number of queued emails in MSMTP's queue directory (as
+referred to by `smtpmail-queue-dir').
+
+If there is an issue reaching or reaching `smtpmail-queue-dir', 0 is
+returned."
     ;; If the queue directory does not exist or is some way unreachable, then we
     ;; just return 0.
     (condition-case nil
