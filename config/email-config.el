@@ -42,6 +42,39 @@
     "/usr/share/emacs/site-lisp/mu4e"))
   "System-specific path to find mu's Emacs Lisp package which provide mu4e.")
 
+(use-package smtpmail
+  :ensure nil ; Built-in
+  :defer nil
+  :init
+  (defvar ravenjoad/queue-mail-command
+    (or (executable-find "msmtp-enqueue.sh")
+        "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-enqueue.sh")
+    "Command that will queue the mail for sending by placing it in a
+directory for later sending.")
+
+  (defvar ravenjoad/send-queued-mail-command
+    (or (executable-find "msmtp-runqueue.sh")
+        "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-runqueue.sh")
+    "Command that will send ALL queued mail.")
+
+  :config
+  (define-advice smtpmail-send-queued-mail
+      (:override () msmtp-send-queued-mail)
+    "Sends all mail currently stored in `smtpmail-queue-dir'.
+Put output in *msmtp-runqueue Output* buffer."
+    (interactive)
+    ;; Now run the msmtp-runqueue.sh command, and put the output in a temporary
+    ;; buffer.
+    (with-temp-buffer
+      (async-shell-command ravenjoad/send-queued-mail-command)))
+
+  :custom
+  (smtpmail-queue-dir (or (getenv "QUEUEDIR")
+                          (getenv "QUEUE_DIR")
+                          (getenv "MSMTP_QUEUE")
+                          (getenv "MSMTPQUEUE")
+                          "~/.msmtpqueue/")))
+
 (use-package mu4e
   :ensure nil ; Provided by mu package
   :defer t
@@ -50,6 +83,9 @@
              (locate-library "mu4e")
              (executable-find "msmtp"))
   :load-path mu4e-load-path
+  ;; mu4e internally requires smtpmail, so we need to make sure it is loaded
+  ;; before we begin to override mu4e-specific portions of smtpmail.
+  :after (smtpmail)
   ;; Give myself a nice easy keybinding to open mu4e
   :bind (("C-c m" . mu4e)
          :map mu4e-view-mode-map
@@ -118,6 +154,20 @@
   (mu4e-completing-read-function #'completing-read)
 
   :config
+  (define-advice mu4e--main-queue-size
+      (:override () msmtpq--main-queue-size)
+    (length (directory-files smtpmail-queue-dir nil "\\.mail\\'")))
+
+  (define-advice mu4e--main-toggle-mail-sending-mode
+      (:after () toggle-sendmail-program)
+    "Toggle `smtpmail-program' between immediate send and queued \"send\".
+
+Uses the `ravenjoad/queue-mail-command' variable to set `sendmail-program' for
+the queued scenario."
+    (if smtpmail-queue-mail ;; Is true, meaning we queue it
+        (setq sendmail-program ravenjoad/queue-mail-command)
+      (setq sendmail-program "msmtp")))
+
   ;; Set the contexts for the accounts I use.
   (setq mu4e-contexts
         `(,(make-mu4e-context
@@ -211,53 +261,11 @@ kgh@u.northwestern.edu")))))
 (use-package emacs
   :ensure nil ; built-in
   :defer nil
-  :init
-  (defvar ravenjoad/queue-mail-command
-    (or (executable-find "msmtp-enqueue.sh")
-        "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-enqueue.sh")
-    "Command that will queue the mail for sending by placing it in a directory for later sending.")
-
-  (defvar ravenjoad/send-queued-mail-command
-    (or (executable-find "msmtp-runqueue.sh")
-        "~/.nix-profile/share/doc/msmtp/scripts/msmtpqueue/msmtp-runqueue.sh")
-    "Command that will send ALL queued mail.")
-
-  ;; in :init so that mu4e catches it when it starts and is immediately going
-  ;; to display the binding for flushing the queue
-  (setq smtpmail-queue-dir (or (getenv "QUEUEDIR")
-                               (getenv "QUEUE_DIR")
-                               (getenv "MSMTP_QUEUE")
-                               (getenv "MSMTPQUEUE")
-                               "~/.msmtpqueue/"))
-
-  (define-advice mu4e--main-toggle-mail-sending-mode
-      (:after () toggle-sendmail-program)
-    "Toggle `smtpmail-program' between immediate send and queued \"send\".
-
-Uses the `ravenjoad/queue-mail-command' variable to set `sendmail-program' for
-the queued scenario."
-    (if smtpmail-queue-mail ;; Is true, meaning we queue it
-        (setq sendmail-program ravenjoad/queue-mail-command)
-      (setq sendmail-program "msmtp")))
-
-  (defun ravenjoad/send-queued-mail ()
-    "Sends all mail currently stored in `smtpmail-queue-dir'.
-Put output in *msmtp-runqueue Output* buffer."
-    (interactive)
-    ;; Now run the msmtp-runqueue.sh command, and put the output in a temporary
-    ;; buffer.
-    (with-temp-buffer
-      (async-shell-command ravenjoad/send-queued-mail-command)))
-
   :config
   ;; We need to make sure the queuing directory exists, before Emacs lets the user
   ;; attempt to use the directory.
   (when (not (file-directory-p smtpmail-queue-dir))
-    (make-directory smtpmail-queue-dir t))
-
-  (define-advice mu4e--main-queue-size
-      (:override () msmtpq--main-queue-size)
-    (length (directory-files smtpmail-queue-dir nil "\\.mail\\'"))))
+    (make-directory smtpmail-queue-dir t)))
 
 
 ;; =============================================================================
