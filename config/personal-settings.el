@@ -58,21 +58,6 @@
   (global-hl-line-mode 1)
 
   ;; Configure where windows holding special kinds of buffers appear.
-  ;; Place selection/search/help/information windows below the current one.
-  (add-to-list 'display-buffer-alist
-               '((or . ((derived-mode . occur-mode)
-                        (derived-mode . grep-mode)
-                        (derived-mode . Buffer-menu-mode)
-                        (derived-mode . log-view-mode)
-                        (derived-mode . help-mode)))
-                 ;; Display as a normal buffer on the right (if possible).
-                 ;; This is not a side-window because I want to be able to use
-                 ;; the `split-window' functions on it.
-                 (display-buffer-in-direction)
-                 (direction . right)
-                 (dedicated . t)
-                 (body-function . select-window)))
-
   ;; The `org-capture' key selection, `org-add-log-note', and agenda dispatcher
   (add-to-list 'display-buffer-alist
                '("\\`\\*\\(Org \\(Select\\|Note\\)\\|Agenda Commands\\)\\*\\'"
