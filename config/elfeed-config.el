@@ -13,7 +13,7 @@
   (elfeed-feeds '(("https://raven.hallsby.com/feed.xml" personal blog)
                   ("https://xkcd.com/atom.xml" comic webcomic)
                   ("https://guix.gnu.org/feeds/blog.atom" gnu guile guix reproducible)
-                  ("https://www.gnu.org/software/shepherd/news/feed.xml" gnu guile guix shepherd)
+                  ("https://shepherding.services/news/feed.xml" gnu guile guix shepherd)
                   ("https://protesilaos.com/codelog.xml" emacs blog)
                   ("https://xeiaso.net/blog.rss" nixos reproducible blog)
                   ("https://ag91.github.io/rss.xml" emacs nyxt blog)
