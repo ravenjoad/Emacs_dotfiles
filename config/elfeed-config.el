@@ -66,7 +66,9 @@
   ;; This is significantly faster, but only works on Emacsen running on Linux
   ;; and Emacsen that are compiled with GNUTLS support
   ;; (see system-configuration-features).
-  (elfeed-use-curl 'nil))
+  (elfeed-use-curl 'nil)
+  ;; Raise the timeout for some sites which are very slow.
+  (url-queue-timeout 15))
 
 ;; Prettify the elfeed buffer, making some things easier to read
 (use-package elfeed-goodies
