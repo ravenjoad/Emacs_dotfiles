@@ -88,7 +88,8 @@
   (defun org-roam-node-tag-read (&optional initial-input filter-fn sort-fn
                                            require-match prompt)
     "Return a list of `org-roam-node' that have a matching #+FILETAG entry.
-PROMPT is a string to "
+
+If provided, the PROMPT string is used as a custom prompt in the minibuffer."
     (interactive current-prefix-arg)
     (let* ((prompt (or prompt "File Tag: "))
            (tag (completing-read prompt (org-roam-tags-list)))
@@ -98,11 +99,11 @@ PROMPT is a string to "
                             `(,title . ,uuid))
                           (org-roam-db-query
                            [:select [title id]
-                                    :from [:select [id file title properties]
-                                                   :from nodes] :as nodes
-                                    :join tags
-                                    :on (= nodes:id tags:node_id)
-                                    :where (= tags:tag $s1)]
+                            :from [:select [id file title properties]
+                                   :from nodes] :as nodes
+                            :join tags
+                            :on (= nodes:id tags:node_id)
+                            :where (= tags:tag $s1)]
                            tag)))
            (selected-node (completing-read "Node: " nodes))
            (selected-node-id (alist-get selected-node nodes 'nil 'nil #'string=)))
