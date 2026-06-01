@@ -39,6 +39,10 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file :no-error-if-file-is-missing)
 
+(use-package compat
+  :ensure t
+  :defer nil)
+
 ;; Set up: my personal info, my personal settings, and personal functions
 (require 'personal-info)
 (require 'personal-settings)
