@@ -43,7 +43,7 @@
                   ("https://gautiersblog.blogspot.com/feeds/posts/default/-/Ada" languages ada blog)
                   ("https://bsdly.blogspot.com/feeds/posts/default" systems bsd blog)
                   ("https://dataswamp.org/~solene/rss-html.xml" systems qubes bsd lisp blog)
-                  ("https://mcyoung.xyz/feed" systems blog)
+                  ("https://mcyoung.xyz/feed.xml" systems blog)
                   ("https://matklad.github.io/feed.xml" languages zig blog)
                   ("https://eli.thegreenplace.net/feeds/all.atom.xml" blog)
                   ("https://www.philipzucker.com/feed.xml" languages datalog egg egraphs databases systems blog)
