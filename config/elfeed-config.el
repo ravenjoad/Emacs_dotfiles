@@ -32,7 +32,7 @@
                   ("https://bernsteinbear.com/feed.xml" compilers languages blog)
                   ("https://www.cs.cmu.edu/~pavlo/blog/feed.xml" databases systems blog)
                   ("https://kubuszok.com/feed.xml" functional scala blog)
-                  ("https://gnuplotting/feed/index.xml" research reproducible blog)
+                  ("https://gnuplotting.org/feed/index.xml" research reproducible blog)
                   ("https://unixism.net/feed/" linux systems blog)
                   ("https://aartaka.me/rss.xml" systems lisp blog)
                   ("https://fzakaria.com/feed.xml" systems nix build-system blog)
