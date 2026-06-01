@@ -37,7 +37,7 @@
                   ("https://aartaka.me/rss.xml" systems lisp blog)
                   ("https://fzakaria.com/feed.xml" systems nix build-system blog)
                   ("https://zipcpu.com/feed.xml" hardware systems verification blog)
-                  ("https://tansanrao.com/rss.xml" systems blog)
+                  ("https://tansanrao.com/feed.xml" systems blog)
                   ("https://ziglang.org/devlog/index.xml" systems languages blog)
                   ("https://blog.maximeheckel.com/rss.xml" systems graphics blog)
                   ("https://gautiersblog.blogspot.com/feeds/posts/default/-/Ada" languages ada blog)
