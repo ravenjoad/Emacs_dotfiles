@@ -11,7 +11,9 @@
   :ensure nil ; built-in
   :commands (dired dired-jump)
   :bind (("C-x d" . dired-jump)
-         ("C-x D" . dired))
+         ("C-x D" . dired)
+         :map dired-mode-map
+         ("X" . ravenjoad/dired-do-command))
   :init
   (keymap-global-unset "C-x C-j")
 
