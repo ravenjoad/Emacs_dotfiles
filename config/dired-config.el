@@ -14,6 +14,21 @@
          ("C-x D" . dired))
   :init
   (keymap-global-unset "C-x C-j")
+
+  :config
+  (defun ravenjoad/dired-do-command (func)
+    "Run FUNC (either a command or a function) on marked files.
+
+Any files not already opened will be opened before running the command.
+After this command has been run, any modified buffers will remain open and
+unsaved."
+    (interactive "aRun on marked files " dired)
+    (save-window-excursion
+      (mapc (lambda (filename)
+              (find-file filename)
+              (call-interactively func))
+            (dired-get-marked-files))))
+
   :custom
   ;; Only use a single dired buffer, having new ones "replace" this one.
   (dired-kill-when-opening-new-dired-buffer t)
