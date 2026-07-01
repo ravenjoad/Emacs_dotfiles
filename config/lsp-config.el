@@ -50,6 +50,9 @@ This buries the buffer to the bottom of the buffer list and deletes the window."
    'eglot-server-programs
    `((scala-ts-mode scala-mode) . ,(eglot-alternatives
                                     '("metals" "metals-emacs"))))
+  (add-to-list
+   'eglot-server-programs
+   `((asy-mode) "asy" "-lsp"))
 
   ;; Each entry in display-buffer-alist has this anatomy:
   ;; ( BUFFER-MATCHING-RULE (according to #'buffer-match-p)
