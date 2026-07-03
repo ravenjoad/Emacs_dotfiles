@@ -14,16 +14,20 @@
   :ensure t
   :defer t)
 
-;; Modify the Hyperspec root directory to the local version that my Guix home
-;; provides.
 (require 'os-detection)
 (use-package clhs
   :ensure nil ; "Built-in" by Guix Home providing it
   :defer t
-  :config
-  ;; Point to my LOCAL copy of the Hyperspec.
+  :init
   (cond
-   ((ravenjoad/is-guix-system) (setq common-lisp-hyperspec-root "~/.guix-home/profile/share/HyperSpec-7-0/"))))
+   ((ravenjoad/is-guix-system)
+    (let ((local-hyperspec-path
+           (expand-file-name "~/.guix-home/profile/share/HyperSpec-7-0/")))
+      ;; Point to my LOCAL copy of the Hyperspec.
+      (setq common-lisp-hyperspec-root (concat "file://" local-hyperspec-path))
+      (add-to-list 'browse-url-handlers
+                   (cons (concat "\\file://" (regexp-quote local-hyperspec-path))
+                         #'eww))))))
 
 (provide 'common-lisp-config)
 ;;; common-lisp-config.el ends here
