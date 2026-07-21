@@ -68,6 +68,7 @@
                   ("https://blog.sheerluck.dev/atom.xml" rust blog)
                   ("https://haskellforall.com/rss.xml" haskell nix languages blog)
                   ("https://www.rntz.net/blog/atom.xml" datalog databases functional languages blog)
+                  ("https://trop.in/feed/blog.xml" guix guile reproducible blog)
                   ("https://atillahallsby.com/feed/" blog rhetoric research)))
   ;; NOTE: Make elfeed use Emacs' built-in url-retrieve function rather than cURL.
   ;; This is significantly faster, but only works on Emacsen running on Linux
