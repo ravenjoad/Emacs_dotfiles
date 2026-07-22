@@ -137,6 +137,11 @@
   ;; which is annoying to remember.
   (help-window-select t)
 
+  ;; Show flymake diagnostics at the end of the line. 'short ensures we only see
+  ;; one of the most severe diagnostics on each line at a time.
+  ;; Only in Emacs >=30.1
+  (flymake-show-diagnostics-at-end-of-line 'short)
+
   ;; I choose to remove the backup~ files because I don't want to have to add every one of those files
   ;; to the .gitignore for projects.
   ;; Besides, auto-saving happens frequently enough for it to not really matter.
