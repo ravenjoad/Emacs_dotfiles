@@ -76,7 +76,7 @@
   ;; (see system-configuration-features).
   (elfeed-use-curl 'nil)
   ;; Raise the timeout for some sites which are very slow.
-  (url-queue-timeout 15))
+  (url-queue-timeout 30))
 
 ;; Prettify the elfeed buffer, making some things easier to read
 (use-package elfeed-goodies
