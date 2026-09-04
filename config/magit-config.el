@@ -35,7 +35,12 @@
   (magit-no-confirm '(stage-all-changes unstage-all-changes))
   (magit-clone-default-directory "~/Repos/")
   (magit-auto-revert-mode t)
-  (magit-tramp-pipe-stty-settings 'pty))
+  (magit-tramp-pipe-stty-settings 'pty)
+  :config
+  ;; Have every magit-status buffer show all worktrees for that repo.
+  (magit-add-section-hook 'magit-status-sections-hook
+                          #'magit-insert-worktrees
+                          nil t))
 
 ;; Display TODO/FIXME/other tagged items in the repository in the magit-status
 ;; buffer.
