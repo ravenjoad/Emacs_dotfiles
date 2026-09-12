@@ -414,6 +414,11 @@ currently running on.")
   ;; eager. But in larger buffers with many matches, it behaves lazily.
   (isearch-lazy-count t)
   ;; Present a count of the number of matches (matches/total)
+  (isearch-count-prefix-format "(%s/%s) ")
+  ;; Allow "unlimited" scrolling in a buffer during an incremental search.
+  ;; 'unlimited allows us to scroll the buffer without restriction while keeping
+  ;; the isearch going.
+  (isearch-allow-scroll 'unlimited))
 
 
 ;;; Window navigation
