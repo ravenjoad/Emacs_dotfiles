@@ -52,7 +52,9 @@
   ;; Include American holidays on the Org-Agenda
   (org-agenda-include-diary t)
   ;; In the calendar to select days, highlight the ones that are American holidays.
-  (calendar-mark-holidays-flag t))
+  (calendar-mark-holidays-flag t)
+  ;; Add timezone to timestamps that include a time in them.
+  (org-time-stamp-formats '("<%Y-%m-%d %a>" . "<%Y-%m-%d %a %H:%M %Z>")))
 
 ;; This package minimizes bullets that are used in Org-mode
 (use-package org-bullets
