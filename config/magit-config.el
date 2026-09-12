@@ -25,6 +25,12 @@
    ("C-x M-g" . #'magit-dispatch)
    ;; With `git blame`, we can find out the commits that changed certain lines and/or regions
    ("C-c b" . #'magit-blame))
+  :config
+  ;; Add section to list all worktrees in the magit-status buffer for a given
+  ;; repository. Every worktree will list every other work tree.
+  (magit-add-section-hook 'magit-status-sections-hook
+                          #'magit-insert-worktrees
+                          nil t)
   :custom
   (magit-no-confirm '(stage-all-changes unstage-all-changes))
   (magit-clone-default-directory "~/Repos/")
