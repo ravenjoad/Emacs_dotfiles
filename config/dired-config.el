@@ -32,11 +32,20 @@ unsaved."
             (dired-get-marked-files))))
 
   :custom
-  ;; Only use a single dired buffer, having new ones "replace" this one.
-  (dired-kill-when-opening-new-dired-buffer t)
+  ;; If in a vc-capable directory (Git, subversion, etc.) Use the VCS's move or
+  ;; rename function to move the file, using `vc-rename-file'.
+  (dired-vc-rename-file t)
+  ;; Automatically revert dired buffers when files change, but only for local
+  ;; files.
+  (dired-do-revert-buffer (lambda (dir)
+                            "Return 't if DIR is not a remote directory/file."
+                            (not (file-remote-p dir))))
+  ;; Automatically revert dired buffers when the directory listing changes.
   (dired-auto-revert-buffer #'dired-directory-changed-p)
   (dired-clean-up-buffers-too t)
   (dired-clean-confirm-killing-deleted-buffers t)
+  ;; Use y/n instead of yes/no to delete files
+  (dired-deletion-confirmer #'y-or-n-p)
   (dired-recursive-copies #'always)
   (dired-recursive-deletes #'always)
   (delete-by-moving-to-trash t)
@@ -46,9 +55,24 @@ unsaved."
 
 (use-package dired
   :ensure nil ; built-in
+  :when (not (version< emacs-version "28.1"))
+  :custom
+  ;; Only use a single dired buffer, having new ones "replace" this one.
+  (dired-kill-when-opening-new-dired-buffer t))
+
+(use-package dired
+  :ensure nil ; built-in
   :when (>= emacs-major-version 29)
   :custom
   (dired-create-destination-dirs-on-trailing-dirsep t))
+
+(use-package dired
+  :ensure nil
+  :when (not (version< emacs-version "30.1"))
+  :custom
+  ;; n/p move up and are bounded to dired file outputs. If you want to go
+  ;; furtner, you must use standard navigation (C-n, C-p).
+  (dired-movement-style 'bounded-files))
 
 ;; Enable dired-x so that we get the "extra goodies" we want to use in dired.
 ;; For example, `dired-do-find-marked-files', which does `find-file' on every
@@ -59,7 +83,10 @@ unsaved."
   :config
   ;; Don't show .git in dired.
   (setq-default dired-omit-files
-                (concat dired-omit-files "\\|^\\.git$"))
+                (concat dired-omit-files
+                        "\\|^\\.git$"
+                        "\\|\\.\\(?:elc\\|a\\|o\\|pyc\\|pyo\\|swp\\|class\\)\\'"
+                        "\\|^\\.DS_Store\\'"))
   :custom
   ;; Don't let dired-x override the default keybindings for existing Emacs
   ;; functions/commands.
