@@ -409,7 +409,11 @@ currently running on.")
 (use-package isearch
   :ensure nil ; Use built-in
   :custom
+  ;; Make the counts counted lazily. This helps in large files with many
+  ;; matches. This actually behaves semi-lazily. In small stuff, the count is
+  ;; eager. But in larger buffers with many matches, it behaves lazily.
   (isearch-lazy-count t)
+  ;; Present a count of the number of matches (matches/total)
   (isearch-count-prefix-format "(%s/%s) ")
   (isearch-count-prefix-format nil))
 
