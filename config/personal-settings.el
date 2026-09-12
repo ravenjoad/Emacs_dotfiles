@@ -85,6 +85,11 @@
                  (dedicated . t)
                  (preserve-size . (t . t))))
 
+  ;; Forcibly disable pixel-precise scrolling for supported pointing devices.
+  ;; I like having scrolling end up on a line, rather than in the middle of the
+  ;; content of a line.
+  (pixel-scroll-precision-mode 0)
+
   :custom
   ;; Make Emacs treat manual and programmatic buffer switches the same. This
   ;; works by making `switch-to-buffer' actually use `pop-to-buffer-same-window'
