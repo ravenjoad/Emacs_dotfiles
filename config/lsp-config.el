@@ -88,17 +88,22 @@ This buries the buffer to the bottom of the buffer list and deletes the window."
   (eglot-autoshutdown t)
   ;; For performance, set this to a low number. When debugging, comment this out.
   ;; Setting to 0 means no messages/events are logged in the EGLOT events buffer.
-  ;; NOTE: In eglot 1.16, this variable was deprecated! If you still want to set
-  ;; the events buffer size to 0, you need the following:
-  ;; (setf (plist-get eglot-events-buffer-config :size) 0)
+  ;; NOTE: In eglot 1.16, this variable was deprecated! See next eglot
+  ;; use-package block for setting the events buffer size to 0.
   (eglot-events-buffer-size 0)
   ;; For performance, set this to ignore. When debugging, comment this out.
   ;; fset-ing to ignore means no jsonrpc event are logged by Emacs.
   (fset #'jsonrpc--log-event #'ignore)
+  ;; Set an unpper limit for the number of files that eglot will watch.
+  (eglot-max-file-watches 5000)
+  ;; Disable automatic code action indicators, reducing background polling. You
+  ;; must manually invoke actions with `eglot-code-actions'.
+  (eglot-code-action-indications nil)
   ;; XRef look-ups can leave the project Eglot is running a server for
   (eglot-extend-to-xref t)
   ;; Wait some number of seconds before waiting for the connection to the LSP.
-  ;; With nil, do not wait to connect at all, just try to connect immediately.
+  ;; With nil, do not wait to connect at all, just try to connect immediately,
+  ;; without blocking Emacs on waiting for this initial connection.
   (eglot-sync-connect nil)
   ;; Reduce the amount of time required for eglot to time-out LSP server
   ;; connection attempts.
@@ -107,8 +112,16 @@ This buries the buffer to the bottom of the buffer list and deletes the window."
    '(;; Disable LSP from providing highlighting, since I use treesitter-based or
      ;; Emacs' built-in regexp-based major modes for font-locking.
      :colorProvider
-     :documentHighlightProvider
+     ;; Disable LSP providing semantic tokens to improve font-locking/syntax
+     ;; highlighting.
+     :semanticTokensProvider
+     ;; Disable LSP from telling me folding ranges. I don't use folding, and
+     ;; even if I did, I think tree-sitter is the better place to put that for
+     ;; now.
      :foldingRangeProvider
+     ;; Do not have Emacs highlight other occurrences of the symbol under the
+     ;; cursor.
+     :documentHighlightProvider
      ;; Disable inline/inlay hints (for function parameters for example).
      ;; The way Emacs handles them makes lines very long and a bit annoying to
      ;; read. I also don't find them that helpful.
@@ -132,6 +145,16 @@ This buries the buffer to the bottom of the buffer list and deletes the window."
                           :autopep8 (:enabled :json-false)
                           :black (:enabled t :line_length 88
                                            :cache_config t)))))))
+
+(use-package eglot
+  :ensure nil
+  :defer t
+  :after (eldoc)
+  :when (not (version< emacs-version "29"))
+  :custom
+  ;; NOTE: Only usable in eglot >=1.16 (from Emacs >=30).
+  ;; Set the events buffer size to 0, disabling the buffer.
+  (eglot-events-buffer-config '(:size 0 :format short)))
 
 (provide 'lsp-config)
 ;;; lsp-config.el ends here
