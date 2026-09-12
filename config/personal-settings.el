@@ -406,7 +406,7 @@ currently running on.")
 
 
 ;;; Searching
-(use-package ispell
+(use-package isearch
   :ensure nil ; Use built-in
   :custom
   (isearch-lazy-count t)
