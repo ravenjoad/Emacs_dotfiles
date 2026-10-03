@@ -52,8 +52,7 @@
   (setq major-mode-remap-alist
         '((yaml-mode . yaml-ts-mode)
           (conf-toml-mode . toml-ts-mode)
-          ;; TODO: Add mermaid-tree-sitter to Guix and add to my home env!
-          ;; (mermaid-mode . mermaid-ts-mode)
+          (mermaid-mode . mermaid-ts-mode)
           (bash-mode . bash-ts-mode)
           (c-mode . c-ts-mode)
           (c++-mode . c++-ts-mode)
