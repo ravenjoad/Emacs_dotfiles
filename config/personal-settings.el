@@ -391,6 +391,104 @@ currently running on.")
 (add-to-list 'default-frame-alist `(font . ,ravenjoad/preferred-font))
 
 
+;;;
+;;; Configure so-long-mode, which makes Emacs faster in files with incredibly
+;;; long lines.
+;;;
+
+(use-package emacs
+  :ensure nil
+  :defer nil
+  :custom
+  ;; Activate so-long-mode when there is a line in the file that exceeds this
+  ;; threshold.
+  (so-long-threshold 6000)
+
+  :config
+  (global-so-long-mode 1)
+
+  (with-eval-after-load 'so-long
+    ;; Keep syntax highlighting
+    (setq so-long-minor-modes (delq 'font-lock-mode so-long-minor-modes))
+    ;; Reduce tree-sitter font-lock levels
+    (add-to-list 'so-long-variable-overrides '(treesit-font-lock-level . 1))
+    ;; Limit normal (non-tree-sitter) font-lock level
+    (add-to-list 'so-long-variable-overrides '(font-lock-maximum-decoration . 1))
+    ;; Make so-long-mode be a minor-mode instead of a major-mode.  This lets us
+    ;; keep the file/buffer's normal major-mode set while still getting the
+    ;; benefits that so-long-mode provide.
+    (setq so-long-action 'so-long-minor-mode)
+    ;; Allow text-mode and conf-mode to trigger so-long-mode too.
+    (add-to-list 'so-long-target-modes 'text-mode)
+    (add-to-list 'so-long-target-modes 'conf-mode)
+    ;; Prevent so-long from attempting to restore the cursor position
+    (add-to-list 'so-long-variable-overrides '(save-place-alist . nil))
+
+    ;; Do not let so-long-mode make the buffer read-only.
+    (setf (alist-get 'buffer-read-only so-long-variable-overrides nil t) nil)
+
+    ;; Emacs 29+ display engine is optimized for truncated lines. Override
+    ;; so-long's default which forces line wrapping.
+    (setf (alist-get 'truncate-lines so-long-variable-overrides nil t) nil)
+
+    ;; Prevent so-long from forcing line-move-visual
+    (setf (alist-get 'line-move-visual so-long-variable-overrides nil t) nil)
+
+    ;; Keep line numbers when so-long-mode triggers
+    (setq so-long-minor-modes (delq 'display-line-numbers-mode so-long-minor-modes))
+
+    ;; Also disable the following minor-modes when so-long-mode triggers
+    (dolist (mode '(;; Structural Editing and Parenthesis Matching
+                    paredit-mode
+                    enhanced-evil-paredit-mode
+                    rainbow-delimiters-mode
+                    smartparens-mode
+                    smartparens-strict-mode
+
+                    ;; Regex and Custom Highlighting
+                    easy-escape-minor-mode
+                    highlight-defined-mode
+                    highlight-indent-guides-mode
+                    auto-composition-mode
+
+                    ;; Outline Scanning / Text folding
+                    outline-minor-mode
+                    treesit-fold-mode
+                    ts-fold-mode
+                    ts-fold-indicators-mode
+
+                    ;; State & History Persistence / I/O
+                    undo-fu-session-mode
+                    undo-tree-mode
+                    better-jumper-local-mode
+                    auto-revert-mode
+
+                    ;; Formatters & Whitespace Managers
+                    aggressive-indent-mode
+                    stripspace-local-mode
+                    ws-butler-mode
+
+                    ;; Linters & Language Servers
+                    eglot--managed-mode
+                    eldoc-mode
+                    flycheck-mode
+                    flymake-mode
+
+                    ;; Spell Checkers
+                    jinx-mode
+                    spell-fu-mode
+
+                    ;; UI Overlays & Margins
+                    indent-bars-mode
+                    highlight-numbers-mode
+                    diff-hl-mode
+                    git-gutter-mode
+                    line-reminder-mode
+                    page-break-lines-mode
+                    hl-fill-column-mode))
+      (add-to-list 'so-long-minor-modes mode))))
+
+
 ;;; Registers & Bookmarks
 ;;; Registers are single-character named "boxes" to store any kind of
 ;;; information in Emacs, including locations of the point (cursor).
