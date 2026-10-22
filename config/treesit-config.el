@@ -77,5 +77,42 @@
   :ensure t
   :defer t)
 
+;; Fix indirect buffers whose parent is a tree-sitter major-mode buffer.
+;; Block below taken from James Cherti and modified to be used in a use-package.
+;; Author: James Cherti
+;; License: GPL
+;; URL: https://www.jamescherti.com/restore-emacs-tree-sitter-syntax-highlighting-in-indirect-buffers/
+;; URL: https://lists.gnu.org/archive/html/bug-gnu-emacs/2026-08/msg00904.html
+(use-package emacs
+  :ensure nil ; built-in metapackage
+  ;; FIXME: Once Emacs addresses this in core Emacs, put an upper bounds on this
+  ;; version check.
+  :if (>= emacs-major-version 31)
+  :config
+  (defun initialize-indirect-buffer-treesit-parsers ()
+    "Initialize tree-sitter parsers in indirect buffers based on the base buffer."
+    (when (and (fboundp 'treesit-major-mode-setup)
+               (fboundp 'treesit-parser-list)
+               (fboundp 'treesit-parser-create))
+      (let* ((base (buffer-base-buffer))
+             ;; If this is an indirect buffer, switch context to the base buffer
+             ;; to retrieve its active parsers.
+             (parser-list (and base
+                               (with-current-buffer base
+                                 (treesit-parser-list)))))
+        (when parser-list
+          ;; Instantiate identical parsers for this indirect buffer.
+          (dolist (parser parser-list)
+            (treesit-parser-create (treesit-parser-language parser)))
+
+          ;; Activate tree-sitter features (such as font-lock and indentation).
+          (treesit-major-mode-setup)
+
+          ;; Force an immediate font-lock refresh
+          (when (fboundp 'font-lock-flush)
+            (font-lock-flush))))))
+
+  :hook ((clone-indirect-buffer-hook . #'initialize-indirect-buffer-treesit-parsers)))
+
 (provide 'treesit-config)
 ;;; treesit-config.el ends here
