@@ -52,6 +52,8 @@
   (setq major-mode-remap-alist
         '((yaml-mode . yaml-ts-mode)
           (conf-toml-mode . toml-ts-mode)
+          ;; TODO: libtree-sitter-markdown-inline.so is not found.
+          ;; (markdown-mode . markdown-ts-mode)
           (mermaid-mode . mermaid-ts-mode)
           (bash-mode . bash-ts-mode)
           (c-mode . c-ts-mode)

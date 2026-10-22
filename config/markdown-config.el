@@ -12,5 +12,11 @@
   :custom
   (markdown-fontify-code-block-natively t))
 
+(use-package markdown-ts-mode
+  :ensure nil ; built-in
+  :defer t
+  ;; Emacs 31 & newer ship with markdown-ts-mode built-in.
+  :when (not (version< emacs-version "31")))
+
 (provide 'markdown-config)
 ;;; markdown-config.el ends here
