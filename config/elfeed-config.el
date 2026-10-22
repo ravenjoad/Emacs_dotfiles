@@ -5,7 +5,9 @@
 ;; Pull in the elfeed package
 (use-package elfeed
   :ensure t
-  :bind (("C-c f" . #'elfeed))
+  :bind (("C-c f" . #'elfeed)
+         :map elfeed-search-mode-map
+         ("$" . #'elfeed-log-show))
   :custom
   ;; List of all feeds that I should fetch and care about
   ;; The cdr (tail of list) will be symbols attached to anything coming from that
