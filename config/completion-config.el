@@ -34,12 +34,12 @@
 ;; which does not work well in the terminal. corfu-terminal replaces the child
 ;; frames with popup/popon, which does work.
 (use-package popon
-  :when (>= emacs-major-version 31)
+  :when (< emacs-major-version 31)
   :ensure (:host codeberg :repo "akib/emacs-popon")
   :defer t)
 
 (use-package corfu-terminal
-  :when (>= emacs-major-version 31)
+  :when (< emacs-major-version 31)
   :ensure (:host codeberg :repo "akib/emacs-corfu-terminal")
   :defer nil
   :init
