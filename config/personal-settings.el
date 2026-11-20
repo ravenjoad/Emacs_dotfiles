@@ -111,6 +111,10 @@
                 (error
                  nil))))))
 
+  ;; Make Emacs behave nicely with Wayland-based Tiling Window Managers (TWMs).
+  (frame-inhibit-implied-resize 'force)
+  (frame-resize-pixelwise t)
+
   ;; According to the POSIX, a line is defined as "a sequence of zero or
   ;; more non-newline characters followed by a terminating newline".
   (require-final-newline t)
